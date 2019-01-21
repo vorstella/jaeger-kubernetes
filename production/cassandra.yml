@@ -100,11 +100,24 @@ items:
             mountPath: /var/lib/cassandra
           - name: cassandra-logs
             mountPath: /var/log/cassandra
-        volumes:
-        - name: cassandra-data
-          emptyDir: {}
-        - name: cassandra-logs
-          emptyDir: {}
+    volumeClaimTemplates:
+    - metadata:
+        name: cassandra-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 25Gi
+        storageClassName: noc-standard
+    - metadata:
+        name: cassandra-logs
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 25Gi
+        storageClassName: noc-standard
+
 - apiVersion: batch/v1
   kind: Job
   metadata:
